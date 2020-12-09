@@ -1,0 +1,16 @@
+{% extends "store/layout.html" %}
+{% load static %}
+
+{% block heading %}
+  <h1>Create Product</h1>
+{% endblock heading %}
+{%block body%}
+  <div class="container">
+    <form method="POST">{%csrf_token%}
+      {{form.as_p}}
+      <input type="submit" class="btn btn-dark btn-block"value="Create Product">
+    </form>
+  </div>
+    
+{%endblock body%}
+

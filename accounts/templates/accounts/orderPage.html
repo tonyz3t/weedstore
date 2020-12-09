@@ -1,0 +1,27 @@
+{% extends 'store/layout.html' %}
+
+{% load static %}
+
+{% block static %}
+<link rel="stylesheet" href="{% static 'accounts/styles.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <h4>Order ID:{{ order.id }}</h4>
+
+    <div>
+        <ul>
+            {% for item in order.orderItems %}
+                <li>{{ item.name }}, p#: {{ item.pk }}, quantity: {{ item.quantity }}, total: ${{ item.itemTotal }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h6>Order Total: ${{ order.orderTotal }}</h6>
+    </div>
+</div>
+
+{% endblock %}

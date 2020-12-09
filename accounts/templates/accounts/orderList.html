@@ -1,0 +1,61 @@
+{% extends 'store/layout.html' %}
+
+{% load static %}
+
+{% block static%}
+<link rel="stylesheet" href="{% static 'accounts/styles.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <h2>Account Page: {{ user.username }}</h2>
+
+    <h2>Orders:</h2>
+
+    <div>
+        <ul>
+            {{x}}
+            <!-- DISPLAY ORDERS HERE -->
+            {% for order in items %}
+            <div class="box-outer m-2 p-2">
+                <li>
+                    <div>
+                        <div class="row">
+                            <a href="{% url 'accounts:orderPage' id=order.id %}" class="box-inner-top">
+                                <div class="">
+                                    <h6>order placed: insert order date in table</h6>
+                                    <h6>ID: {{ order.id }}</h6>
+
+                                </div>
+                            </a>
+                        </div>
+
+                        <div>
+                            <hr>
+                        </div>
+
+                        <div class="row">
+                            <div class="box-inner-bottom">
+                                <ul>
+                                    {% for item in order.orderItems %}
+                                    <li>{{ item.name }}, p#: {{ item.pk }}, quantity: {{ item.quantity }}, total:
+                                        ${{ item.itemTotal }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h6>Order Total: ${{ order.orderTotal }}</h6>
+                    </div>
+
+                </li>
+            </div>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+{% endblock %}

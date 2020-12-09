@@ -1,0 +1,27 @@
+{% extends 'store/layout.html' %}
+{% load static %}
+
+{% block body %}
+    <div class="container">
+        <h1>Checkout Page</h1>
+
+        <div></div>
+        <div>Order #:{{ obj.id }}</div>
+        <div>
+            <ul>
+                {% for product in obj.orderItems %}
+                    <li>{{ product.items.name }} Quantity: {{ product.quantity }}, Item Total: ${{ product.totalPrice }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            <h6>Order Total: ${{ obj.orderTotal }}</h6>
+        </div>
+
+        <a href="{% url 'checkout:pay' pk=obj.primaryKey %}" class="btn btn-primary"> Continue Checkout</a>
+    </div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

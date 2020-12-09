@@ -1,0 +1,95 @@
+{% extends "store/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm">
+                <h1 class="navText">The Store</h1>
+            </div>
+           
+        </div>
+        <!-- The my-5 gives 5 margin on the top and bottom-->
+        <div class="row justify-content-center"> 
+            <div class="col-4" style="text-align: center">
+                <h1>Products</h1>
+            </div>
+         </div>
+         <!-- Justify content makes everything centered  -->
+        <div class="row">
+            <div class="col px-0">
+                <div class="owl-carousel owl-theme owl-loaded">
+                    {%for product in products %} <!--Adding all the products into the carousel-->
+                        <div class="item carouselBlock" id="outterCarousel"> <!--Outter div for the big block that has shadow-->
+                            <a href="{% url 'product:productPage' id=product.0.id %}"> 
+                                <div class="carouselBlockInner"><!--Inner Div that has the product it self-->
+                                    <div>
+                                        <img class="imageInBlock" src="{{product.1}}" alt="">
+                                    </div>
+                                 
+                                    <h1>
+                                        {{product.0.name|capfirst}} | ${{product.0.price}}
+                                    </h1>
+                                </div>
+                            </a>
+                        </div>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center"> 
+            <div class="col-4" style="text-align: center">
+                <h1>Featured Products</h1>
+            </div>
+         </div>
+         <!-- Justify content makes everything centered  -->
+        <div class="row">
+            <div class="col px-0">
+                <div class="owl-carousel owl-theme owl-loaded">
+                    {%for product in products %} <!--Adding all the products into the carousel-->
+                        {% if product.0.is_featured%}
+                            <div class="item carouselBlock" id="outterCarousel"> <!--Outter div for the big block that has shadow-->
+                                <a href="{% url 'product:productPage' id=product.0.id %}"> 
+                                    <div class="carouselBlockInner"><!--Inner Div that has the product it self-->
+                                        <div>
+                                            <img class="imageInBlock" src="{{product.1}}" alt="">
+                                        </div>
+                                        <h1>
+                                            {{product.0.name|capfirst}} | ${{product.0.price}}
+                                        </h1>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endif %}
+                    {%endfor%}
+                    
+                </div>
+                
+            </div>
+            
+        </div>
+        <div>
+            <ul>
+                <li><a href="{% url 'product:createProduct' %}">Create Product</a></li>
+            </ul>
+        </div>
+       
+    
+    </div> 
+   
+{% endblock body %}
+
+{% block script %}
+    <script>
+        $('.owl-carousel').owlCarousel({
+            center: true,
+            loop: true,
+            margin: 1,
+            autoWidth: true,
+            smartSpeed: 300,
+            nav: true
+        })
+    </script>
+{% endblock %}

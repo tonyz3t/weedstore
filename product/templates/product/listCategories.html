@@ -1,0 +1,48 @@
+{% extends "store/layout.html" %}
+
+{% load static %}
+
+{%block body%}
+<h1>Products</h1>
+<!--Django templates doesn't allow () or [] or {}. Use '.' instead. So arr[0] is arr.0 -->
+{%for category in categories%}
+<h1>
+    <a href="{% url 'product:productsByCategory' id=category.2 %}">{{category.0|capfirst}}</a> has {{category.1}} items
+</h1>
+<div class="row">
+    <div class="col px-0">
+        <div class="owl-carousel owl-theme owl-loaded">
+            {%for product in category.3 %}
+            <!--Adding all the products into the carousel-->
+            <div class="item carouselBlock" id="outterCarousel">
+                <!--Outter div for the big block that has shadow-->
+                <a href="{% url 'product:productPage' id=product.p.id %}">
+                    <div class="carouselBlockInner fill">
+                        <!--Inner Div that has the product it self-->
+                        <h2>
+                            {{product.p.name|capfirst}} | ${{product.p.price}}
+                        </h2>
+                        <img src="{{ product.img }}">                   
+                    </div>
+                </a>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</div>
+{%endfor%}
+
+{%endblock%}
+
+{% block script %}
+    <script>
+        $('.owl-carousel').owlCarousel({
+            center: true,
+            loop: true,
+            margin: 1,
+            autoWidth: true,
+            smartSpeed: 300,
+            nav: true
+        })
+    </script>
+{% endblock %}

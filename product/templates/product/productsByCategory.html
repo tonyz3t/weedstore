@@ -1,0 +1,15 @@
+{%extends 'store/layout.html'%}
+{% load static %}
+
+{%block body%}
+    
+    {%for product in products%}
+        <h1><a href="{%url 'product:productPage' id=product.id%}">{{product}}</a></h1>
+        {%empty%}
+        <h1>No Products :(</h1>
+    {%endfor%}
+
+    
+    
+
+{%endblock%}

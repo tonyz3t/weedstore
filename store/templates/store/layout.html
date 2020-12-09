@@ -1,0 +1,276 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'store/style.css' %}">
+  <link rel="stylesheet" href="{% static 'store/OwlCarousel/dist/assets/owl.carousel.css' %}">
+  <link rel="stylesheet" href="{% static 'store/OwlCarousel/dist/assets/owl.theme.default.min.css' %}">
+  <link rel="shortcut icon" type="image/png" href="{% static 'store/svg/cart.svg' %}" />
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Site Metas -->
+  <title>Two Dips</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Site Icons -->
+  <link rel="shortcut icon" href="{% static 'store/images/favicon.ico' %}" type="image/x-icon">
+  <link rel="apple-touch-icon" href="{% static 'store/images/apple-touch-icon.png' %}">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{% static 'store/css/bootstrap.min.css' %}">
+  <!-- Site CSS -->
+  <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
+  <!-- Responsive CSS -->
+  <link rel="stylesheet" href="{% static 'store/css/responsive.css' %}">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'store/css/custom.css' %}">
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+    integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
+    crossorigin="anonymous"></script>
+
+  <script src="{% static 'store/index.js'%}"></script>
+  <script src="{% static 'store/OwlCarousel/docs/assets/vendors/jquery.min.js'%}"></script>
+  <script src="{%static 'store/OwlCarousel/dist/owl.carousel.js'%}"></script>
+  {% block static %}
+  {% endblock %}
+</head>
+
+<body>
+  <div>
+    <header class="main-header">
+      <!-- Start Navigation -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-default bootsnav" id="stickyNavbar">
+        <div class="container">
+          <!-- Start Header Navigation -->
+          <div class="navbar-header">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu"
+              aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+              <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="{% url 'store:index'%}"><img src="{% static 'store/images/logo.png' %}"
+                class="logo" alt=""></a>
+          </div>
+          <!-- End Header Navigation -->
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="navbar-menu">
+            <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
+              <li class="nav-item active"><a class="nav-link" href="{% url 'store:index'%}">Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'product:listCategories'%}">Categories</a></li>
+              <li class="dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Products <i
+                    class="fa fa-caret-down"></i></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{% url 'product:productIndex'%}">View Products</a></li>
+                  <!-- <li><a href="#">Shop Detail</a></li>
+                                <li><a href="#">Cart</a></li>
+                                <li><a href="#">Checkout</a></li>
+                                <li><a href="#">My Account</a></li>
+                                <li><a href="#">Wishlist</a></li> -->
+                </ul>
+              </li>
+              {% if user.is_authenticated %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'accounts:index' %}">Account</a></li>
+              {% endif %}
+              {% if user.is_authenticated %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">Log Out</a></li>
+              {% else %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Log in</a></li>
+              {% endif %}
+            </ul>
+          </div>
+          <!-- /.navbar-collapse -->
+
+          <!-- Start Atribute Navigation -->
+          <div class="attr-nav">
+            <ul>
+              <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
+              <li>
+                <a href="{% url 'cart:index' %}">
+                  <i class="fa fa-shopping-bag"></i>
+                  <span class="badge">{{cart.count}}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <!-- End Atribute Navigation -->
+        </div>
+        <!-- Start Side Menu -->
+
+        <!-- End Side Menu -->
+      </nav>
+      <!-- End Navigation -->
+    </header>
+    <!-- End Main Top -->
+
+    <!-- Start Top Search -->
+    <div class="top-search">
+      <div class="container">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+          <input type="text" class="form-control" placeholder="Search">
+          <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
+        </div>
+      </div>
+    </div>
+    <!-- End Top Search -->
+
+
+    {% block heading %}
+
+    {% endblock %}
+
+    {% block body %}
+
+    {% endblock %}
+
+    <!-- Start Footer  -->
+    <footer>
+      <div class="footer-main">
+        <div class="container">
+          <div class="row">
+            <!-- Hours -->
+            <div class="col-lg-4 col-md-12 col-sm-12">
+              <div class="footer-top-box">
+                <h3>Customer Service Hours</h3>
+                <ul class="list-time">
+                  <li>Monday - Friday: 08.00am to 05.00pm</li>
+                  <li>Saturday: 10.00am to 08.00pm</li>
+                  <li>Sunday: <span>Closed</span></li>
+                </ul>
+              </div>
+            </div>
+            <!-- Newsletter -->
+            <div class="col-lg-4 col-md-12 col-sm-12">
+              <div class="footer-top-box">
+                <h3>Newsletter</h3>
+                <form class="newsletter-box">
+                  <div class="form-group">
+                    <input class="" type="email" name="Email" placeholder="Email Address*" />
+                    <i class="fa fa-envelope"></i>
+                  </div>
+                  <button class="btn hvr-hover" type="submit">Submit</button>
+                </form>
+              </div>
+            </div>
+            <!-- contact us -->
+            <div class="col-lg-4 col-md-12 col-sm-12">
+              <div class="footer-link-contact">
+                <h4>Contact Us</h4>
+                <ul>
+                  <li>
+                    <p><i class="fas fa-map-marker-alt"></i>Address: Two Dips 3756 <br>Scott Road
+                      Surrey,<br> BC v3w3v3 </p>
+                  </li>
+                  <li>
+                    <p><i class="fas fa-phone-square"></i>Phone: <a href="tel:+1-888705770">No Number yet Sr.</a></p>
+                  </li>
+                  <li>
+                    <p><i class="fas fa-envelope"></i>Email: <a
+                        href="mailto:contactinfo@gmail.com">ThisIsNotARealEmail@gmail.com</a></p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- Social Media -->
+            <!-- <div class="col-lg-4 col-md-12 col-sm-12">
+              <div class="footer-top-box">
+                <h3>Social Media</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <ul>
+                  <li><a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
+                  <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                  <li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
+                  <li><a href="#"><i class="fab fa-google-plus" aria-hidden="true"></i></a></li>
+                  <li><a href="#"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
+                  <li><a href="#"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a></li>
+                  <li><a href="#"><i class="fab fa-whatsapp" aria-hidden="true"></i></a></li>
+                </ul>
+              </div>
+            </div> -->
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-lg-4 col-md-12 col-sm-12">
+              <div class="footer-widget">
+                <h4>About Two Dips</h4>
+                <p>We're Two Dips, thats about it. We also do a lot of computer stuff because life in village very
+                  tough have to shit on street.
+                </p>
+                <p>But we are not about to let us not having a toilet stop us from building best tech solution for your needs 22g. </p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-12 col-sm-12">
+              <div class="footer-link">
+                <h4>Information</h4>
+                <ul>
+                  <li><a href="#">About Us</a></li>
+                  <li><a href="#">Customer Service</a></li>
+                  <li><a href="#">Our Sitemap</a></li>
+                  <li><a href="#">Terms &amp; Conditions</a></li>
+                  <li><a href="#">Privacy Policy</a></li>
+                  <li><a href="#">Delivery Information</a></li>
+                </ul>
+              </div>
+            </div>
+            <!-- <div class="col-lg-4 col-md-12 col-sm-12">
+              <div class="footer-link-contact">
+                <h4>Contact Us</h4>
+                <ul>
+                  <li>
+                    <p><i class="fas fa-map-marker-alt"></i>Address: Michael I. Days 3756 <br>Preston Street
+                      Wichita,<br> KS 67213 </p>
+                  </li>
+                  <li>
+                    <p><i class="fas fa-phone-square"></i>Phone: <a href="tel:+1-888705770">+1-888 705 770</a></p>
+                  </li>
+                  <li>
+                    <p><i class="fas fa-envelope"></i>Email: <a
+                        href="mailto:contactinfo@gmail.com">contactinfo@gmail.com</a></p>
+                  </li>
+                </ul>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer  -->
+
+  </div>
+  {%block script%}
+
+  {%endblock%}
+  <!-- ALL PLUGINS -->
+  <script src="{% static 'store/js/jquery.superslides.min.js' %}"></script>
+  <script src="{% static 'store/js/bootstrap-select.js' %}"></script>
+  <script src="{% static 'store/js/inewsticker.js' %}"></script>
+  <script src="{% static 'store/js/bootsnav.js' %}"></script>
+  <script src="{% static 'store/js/images-loded.min.js' %}"></script>
+  <script src="{% static 'store/js/isotope.min.js' %}"></script>
+  <script src="{% static 'store/js/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'store/js/baguetteBox.min.js' %}"></script>
+  <script src="{% static 'store/js/form-validator.min.js' %}"></script>
+  <script src="{% static 'store/js/contact-form-script.js' %}"></script>
+  <script src="{% static 'store/js/custom.js' %}"></script>
+
+</body>
+
+</html>
