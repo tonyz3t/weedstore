@@ -1,7 +1,7 @@
 from django.db import models
 
 from accounts.models import Profile
-from product.models import Product
+from product.models import Product, Variant
 
 # Create your models here.
 
@@ -25,6 +25,7 @@ class CartItem(models.Model):
     items = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     quantity = models.IntegerField(default=1)
     totalPrice = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
+    variant = models.ForeignKey(Variant, on_delete=models.CASCADE, null=True)
     
     def __str__(self):
         return (self.items.name + "," + str(self.quantity))

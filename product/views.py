@@ -16,7 +16,6 @@ def createProductView(request):
             #return redirect(reverse('product.views.createProductView'))
             print("Inside ")
             
-            
             return redirect(reverse('product:productPage', kwargs={'id':savedForm.pk}))#pk means primary key. gives back primary key of the object in the db and directs to its product page
             
     else:
@@ -24,7 +23,7 @@ def createProductView(request):
     context = {
         'form': productForm
     }
-   
+    
     return render(request, "product/createProduct.html", context)
 
 # Returns product home page with all of the products
@@ -48,6 +47,8 @@ def productPage(request, id):
    
     imgsList = []#We need a list because we need to keep the order of the images. Thumbnails come first.
     imgs = Product.objects.get(id=id).image_set.all()#Retrieve all the images related to this product
+    variants = Product.objects.get(id=id).variant_set.all()
+    print(variants)
     for i in imgs:#Loop throuhg the images and if it is a thumbnail insert it at the beginning of the list otherwise at the end
         if i.isThumbnail:
             imgsList.insert(0, i.url)#Save space by only inserting the url at index 0
@@ -58,6 +59,7 @@ def productPage(request, id):
     return render(request, "product/productPage.html", {
         "product": Product.objects.get(id=id),
         "images": imgsList,
+        "variants": variants,
         
     })
     

@@ -6,6 +6,6 @@ from . import views
 app_name = 'cart'
 urlpatterns = [
     path("", views.index, name='index'),
-    path('<int:id>/addToCart/', views.itemAdded, name="itemAdded"),
-    path('delete/<int:id>/', views.deleteItem, name='deleteItem'),
+    path('<int:id>/addToCart/', views.itemAdded, name="itemAdded" ),
+    path('delete/<int:id>/<int:var>/', views.deleteItem, name='deleteItem'),
 ]

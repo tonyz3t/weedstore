@@ -6,7 +6,7 @@ from django.urls import reverse, reverse_lazy
 
 from .models import CartItem, get_cart_total, updateCartItemTotal
 from accounts.models import Profile
-from product.models import Product, Image
+from product.models import Product, Image, Variant
 from django.utils.datastructures import MultiValueDictKeyError
 
 # Create your views here.
@@ -54,6 +54,7 @@ def index(request):
         img = Image.objects.get(product=item.items).url
         cartList.append({
             "item": item,
+            
             "img": img
         })
 
@@ -71,17 +72,21 @@ def index(request):
 # Function to add item to the cart
 # - Takes arg id which is the id of the product to be added
 @login_required(login_url=reverse_lazy('accounts:login'))
-def itemAdded(request, id):
+def itemAdded(request, id, **kwargs):
     #The html form automaticaly makes sure the quanity is atleast 1, and not a negative number
     profile = Profile.objects.get(user=request.user)#Get the profile instance from the db
     item = Product.objects.get(id=id) #Get the product from the products db
+    
     try:
         quantity = request.GET["quantity"]#Get the quantity from the GET request
     except MultiValueDictKeyError as e:
         quantity = "1"
         
-    print(quantity)
-    isAlreadyInCart = CartItem.objects.filter(user=profile, items=item) #This is a queryset that will have one object if the item is already gotten by the user
+    variantPK = request.GET["options"]
+    print("printing variant " + variantPK)
+    variant = Variant.objects.get(pk=variantPK) 
+
+    isAlreadyInCart = CartItem.objects.filter(user=profile, items=item, variant=variant) #This is a queryset that will have one object if the item is already gotten by the user
     if len(isAlreadyInCart) > 0:#If the user already bought the item
         cItemFromTable = isAlreadyInCart.first() #Make an instance of that CartItem that has the same product
         if cItemFromTable.quantity + int(quantity) > item.stockAmount:#If the sum quantity is larget than stock, then make it so make amount can be added to cItem
@@ -99,18 +104,20 @@ def itemAdded(request, id):
         cartItem = CartItem(
             user=profile,
             items=item, 
-            quantity=quantity) #Create an instance of a CartItem with that item. Altough 'totalPrice' is a field of CartItem, it has a default and we are setting it right after this line anyways. We Have to set it after we make it.
+            quantity=quantity,
+            variant=variant) #Create an instance of a CartItem with that item. Altough 'totalPrice' is a field of CartItem, it has a default and we are setting it right after this line anyways. We Have to set it after we make it.
         updateCartItemTotal(cartItem)#Now update this particular instance's totalPrice.
         cartItem.save() #Save it to the db
     print("Down here")
     return HttpResponseRedirect(reverse('cart:index')) #Give back a page saying added to cart
 
 # Function to delete an item from the cart
-def deleteItem(request, id):
+def deleteItem(request, id, var):
     profile = Profile.objects.get(user=request.user)#Grab the profile and the item from the db
     item = Product.objects.get(id=id)
+    variant = Variant.objects.get(pk=var)
 
-    CartItem.objects.filter(user=profile, items=item).delete()#Find the cart item in the db and delete it
+    CartItem.objects.filter(user=profile, items=item, variant=variant).delete()#Find the cart item in the db and delete it
     
     #Return the cart page again
     return HttpResponseRedirect(reverse('cart:index'))

@@ -52,7 +52,7 @@
                                         </a>
                                     </td>
                                     <td class="price-pr">
-                                        <p>$ {{ product.item.items.price }}</p>
+                                        <p>$ {{ product.item.variant.price }}</p>
                                     </td>
                                     <td class="quantity-box"><input name="product{{ product.item.items.id }}" type="number" size="4" value="{{ product.item.quantity }}" min="0" step="1"
                                             class="c-input-text qty text"></td>
@@ -60,7 +60,7 @@
                                         <p>$ {{ product.item.totalPrice }}</p>
                                     </td>
                                     <td class="remove-pr">
-                                        <a href="{% url 'cart:deleteItem' id=product.item.items.id %}">
+                                        <a href="{% url 'cart:deleteItem' id=product.item.items.id var=product.item.variant.pk%}">
                                             <i class="fas fa-times"></i>
                                         </a>
                                     </td>

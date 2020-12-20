@@ -28,49 +28,60 @@
     <div class="container">
         <div class="row no-gutters justify-content-center">
             <div class="col-xl-5 col-lg-5 col-md-6 text-center">
-                    <div id="zoomContainer" class="imageZoomContainer">
-                        <!-- This Div is just for the big image and the small zoomed in and also has inline styling to make it so the cursor vanishes when hovering -->
-                        <div onmouseover="showZoom();" onmouseout="hideZoom();" style="display: inline; cursor: crosshair;">
-                            <div class="imageZoomResult hideZoom" id="zoomResult"></div>
-                            <img class="fit-image" id="productImage" src="{{images.0}}">
-                        </div>
-                        <!-- The mx-auto makes it so there is equal margin on both left and right side of carousel -->
-                        <div class="owl-carousel owl-theme owl-loaded mt-3 mx-auto productImageCarousel">
-                            {%for image in images%}
-                            <div class="item productImageBlock">
-                                <img onclick="imageZoom(this.src);"class="productImageBlockImage" src="{{image}}" alt="">
-                            </div>
-                            {%endfor%}
-                        </div>
+                <div id="zoomContainer" class="imageZoomContainer">
+                    <!-- This Div is just for the big image and the small zoomed in and also has inline styling to make it so the cursor vanishes when hovering -->
+                    <div onmouseover="showZoom();" onmouseout="hideZoom();" style="display: inline; cursor: crosshair;">
+                        <div class="imageZoomResult hideZoom" id="zoomResult"></div>
+                        <img class="fit-image" id="productImage" src="{{images.0}}">
                     </div>
+                    <!-- The mx-auto makes it so there is equal margin on both left and right side of carousel -->
+                    <div class="owl-carousel owl-theme owl-loaded mt-3 mx-auto productImageCarousel">
+                        {%for image in images%}
+                        <div class="item productImageBlock">
+                            <img onclick="imageZoom(this.src);" class="productImageBlockImage" src="{{image}}" alt="">
+                        </div>
+                        {%endfor%}
+                    </div>
+                </div>
             </div>
             <div class="col-xl-7 col-lg-7 col-md-6 text-center">
                 <div class="single-product-details">
+                    <form method="GET" action="{% url 'cart:itemAdded' id=product.id  %}">
                     <h2>{{ product.name|capfirst }}</h2>
+                    
+                    <select name="options" class="form-control dropDown text-center mb-3" style="width:30%; border-radius: 5px;">
+                        {% for object in variants %}
+                        <option value="{{object.pk}}" class="mb-3">size: {{ object.size }} price: ${{ object.price }}</option>
+                        {% endfor %}
+                    </select>
+
                     <h5> <del>$ {{ product.price }}</del> ${{ product.price }}</h5>
                     <p class="available-stock"> Stock: {{product.stockAmount}}
                     <p>
                     <h4>Short Description:</h4>
                     <p>{{ product.description }}. </p>
-                    <form method="GET" action="{% url 'cart:itemAdded' id=product.id %}">
-                        
-                            
-                                <div class="mb-3">
-                                    <label style="display:block;">Quantity</label>
-                                    <input class="text-center" style="width:30%; border-radius: 5px;" value="1" min="0" max="{{product.stockAmount}}" type="number" name="quantity">
-                                </div>
-                           
-                        
+                    
+
+
+                        <div class="mb-3">
+                            <label style="display:block;">Quantity</label>
+                            <input class="text-center" style="width:30%; border-radius: 5px;" value="1" min="0"
+                                max="{{product.stockAmount}}" type="number" name="quantity">
+                        </div>
+
+
 
                         <div class="price-box-bar">
                             <div class="cart-and-bay-btn">
                                 {% if product.stockAmount == 0 %}
-                                <input type="submit" class="btn hvr-hover" value="Add to Cart" style="color: #FFFFFF;" disabled>
+                                <input type="submit" class="btn hvr-hover" value="Add to Cart" style="color: #FFFFFF;"
+                                    disabled>
                                 {% else %}
                                 <input type="submit" class="btn hvr-hover" value="Add to Cart" style="color: #FFFFFF;">
                                 {% endif %}
                             </div>
                         </div>
+
                     </form>
 
                     <div class="add-to-btn">
@@ -153,11 +164,10 @@
         autoWidth: true,
         smartSpeed: 300,
         dots: false,
-    
+
         nav: true,
-        
+
     })
     document.body.onload = (() => initialize())
 </script>
 {%endblock script%}
-
