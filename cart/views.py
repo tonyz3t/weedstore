@@ -51,11 +51,12 @@ def index(request):
     cartList = []
     
     for item in cart:
-        img = Image.objects.get(product=item.items).url
+        img = item.items.image_set.filter(isThumbnail=True).first()
         cartList.append({
             "item": item,
-            
-            "img": img
+
+            "img": img.url  
+
         })
 
     # get the total value of the cart in its entirity

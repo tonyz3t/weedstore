@@ -86,8 +86,6 @@
                             <img src="{{product.img}}" class="img-fluid biggerAnimation" alt="Image">
                         </div>
                         
-                    
-                        
                         <div class="mask-icon">
                             <ul>
                                 <li><a href="{%url 'product:productPage' id=product.product.id%}" data-toggle="tooltip" data-placement="right" title="View"><i
@@ -97,7 +95,9 @@
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i
                                             class="far fa-heart"></i></a></li>
                             </ul>
-                            <a class="cart" href="">Add to Cart</a>
+                            <a href="#" class="cart" data-toggle="tooltip" data-placement="center" title="Add to Cart">
+                                <i class="fa fa-cart-plus"></i>
+                            </a>
                         </div>
                     </div>
                     <div class="why-text">

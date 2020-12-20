@@ -1,3 +1,10 @@
+:root{
+    --main-color: #e3e3e3;
+    --secondary-color: #124559;
+    --text-color: white;
+    --clickable-link-color: #5c7aff;
+}
+
 .navText{
     text-align: center;
     font-size: xx-large;
@@ -63,7 +70,8 @@
     display: inline-block;
     left: 50%;
     transform: translateX(-50%);
-    margin-top: 50px;
+    font-size: 32px;
+    margin-top: 15px;
 
  
 }
@@ -79,8 +87,8 @@
     padding-left: 10px;
     padding-right: 10px;
     border-top-right-radius: 15px;
-    background: rgb(162,96,96);
-    background: linear-gradient(90deg, rgba(162,96,96,1) 0%, rgba(124,19,21,1) 100%, rgba(255,0,0,1) 100%);
+    
+    background: linear-gradient(90deg, rgb(96, 97, 162) 0%, rgb(33, 155, 255) 100%, rgb(71, 124, 173) 100%);
     
     color: #FFF !important;
     /* text-shadow: 2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000; */
@@ -125,8 +133,8 @@
 .imageInBlock{
     height: 200px;
     width: 200px;
-    object-fit: scale-down;
-    border: 2px solid black;
+    object-fit: cover;
+ 
 
    
 
@@ -264,12 +272,12 @@ border-radius: 10px;
 
 
 /* display grid */
-/* 
-div[class="row"] {
+
+/* div[class="row"] {
     outline: 1px dotted rgba(0, 0, 0, 0.25);
 }
 
 div[class^="col-"] {
     background-color: rgba(255, 0, 0, 0.2);
     outline: 1px dotted rgba(0, 0, 0, 0.5);
-} */
+}  */

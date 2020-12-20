@@ -42,13 +42,15 @@ def productIndex(request):
 
 # Function returns the view for a single item
 # retrieves a page based on the items id
-def productPage(request, id):
+def productPage(request, **kwargs):
     # return the user to the page with single item
    
     imgsList = []#We need a list because we need to keep the order of the images. Thumbnails come first.
-    imgs = Product.objects.get(id=id).image_set.all()#Retrieve all the images related to this product
-    variants = Product.objects.get(id=id).variant_set.all()
+
+    imgs = Product.objects.get(id=kwargs['id']).image_set.all()#Retrieve all the images related to this product
+    variants = Product.objects.get(id=kwargs['id']).variant_set.all()
     print(variants)
+
     for i in imgs:#Loop throuhg the images and if it is a thumbnail insert it at the beginning of the list otherwise at the end
         if i.isThumbnail:
             imgsList.insert(0, i.url)#Save space by only inserting the url at index 0
@@ -57,7 +59,7 @@ def productPage(request, id):
 
     
     return render(request, "product/productPage.html", {
-        "product": Product.objects.get(id=id),
+        "product": Product.objects.get(id=kwargs['id']),
         "images": imgsList,
         "variants": variants,
         
@@ -85,8 +87,16 @@ def listCategories(request):#The view to show all the categories and their item 
 def productsByCategory(request, id):#List all products in a category
     category = Category.objects.get(id=id)#Get the category we are searching in
     productsSet = category.product_set.all()#Reverse children from parent search. Get all of them in a queryset
- 
-    return render(request, "product/productsByCategory.html", {'products':productsSet})
+    products = []
+
+    for i in Category.objects.get(id=id).product_set.all():
+        arr = []
+        arr.append(i)
+        img = i.image_set.filter(isThumbnail=True).first()
+        arr.append(img.url)
+        products.append(arr)
+    print(products)
+    return render(request, "product/productsByCategory.html", {'products': products, 'category': category})
 
 #TODO
 #Rename CartItem's 'items' to item.

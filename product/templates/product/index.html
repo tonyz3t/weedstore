@@ -23,14 +23,14 @@
                 <div class="owl-carousel owl-theme owl-loaded">
                     {%for product in products %} <!--Adding all the products into the carousel-->
                         <div class="item carouselBlock" id="outterCarousel"> <!--Outter div for the big block that has shadow-->
-                            <a href="{% url 'product:productPage' id=product.0.id %}"> 
+                            <a href="{% url 'product:productPage' id=product.0.id%}"> 
                                 <div class="carouselBlockInner"><!--Inner Div that has the product it self-->
                                     <div>
                                         <img class="imageInBlock" src="{{product.1}}" alt="">
                                     </div>
                                  
                                     <h1>
-                                        {{product.0.name|capfirst}} | ${{product.0.price}}
+                                        {{product.0}} | ${{product.0.price}}
                                     </h1>
                                 </div>
                             </a>

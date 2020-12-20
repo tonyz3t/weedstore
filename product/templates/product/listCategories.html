@@ -3,11 +3,11 @@
 {% load static %}
 
 {%block body%}
-<h1>Products</h1>
+<h1 class="ml-4" style="font-size: 64px;">Products</h1>
 <!--Django templates doesn't allow () or [] or {}. Use '.' instead. So arr[0] is arr.0 -->
 {%for category in categories%}
-<h1>
-    <a href="{% url 'product:productsByCategory' id=category.2 %}">{{category.0|capfirst}}</a> has {{category.1}} items
+<h1 class="ml-4">
+    <a href="{% url 'product:productsByCategory' id=category.2 %}"> <span style="font-size: xxx-large; color: var(--clickable-link-color);">{{category.0|capfirst}}</span> <i class="fas fa-arrow-right"></i></a>
 </h1>
 <div class="row">
     <div class="col px-0">
