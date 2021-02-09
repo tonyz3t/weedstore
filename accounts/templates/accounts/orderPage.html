@@ -4,24 +4,55 @@
 
 {% block static %}
 <link rel="stylesheet" href="{% static 'accounts/styles.css' %}">
+<link rel="stylesheet" href="{% static 'accounts/stylesOrder.css' %}">
 {% endblock %}
 
 {% block body %}
+
+<!-- Second order details option -->
+
 <div class="container">
-
-    <h4>Order ID:{{ order.id }}</h4>
-
-    <div>
-        <ul>
-            {% for item in order.orderItems %}
-                <li>{{ item.name }}, p#: {{ item.pk }}, quantity: {{ item.quantity }}, total: ${{ item.itemTotal }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <div>
-        <h6>Order Total: ${{ order.orderTotal }}</h6>
-    </div>
+    <article class="card">
+        <header class="card-header"> My Orders / Tracking </header>
+        <div class="card-body">
+            <h6>Order ID: {{ order.id }}</h6>
+            <article class="card">
+                <div class="card-body row">
+                    <div class="col"> <strong>Estimated Delivery time:</strong> <br>29 nov 2019 </div>
+                    <div class="col"> <strong>Shipping BY:</strong> <br> BLUEDART, | <i class="fa fa-phone"></i> +1598675986 </div>
+                    <div class="col"> <strong>Status:</strong> <br> Picked by the courier </div>
+                    <div class="col"> <strong>Tracking #:</strong> <br> BD045903594059 </div>
+                </div>
+            </article>
+            <input type="hidden" id="trackStep" value="{{ trackStep }}">
+            <div class="track">
+                <div id="confirmed" class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Order confirmed</span> </div>
+                <div id="shipped" class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text">Shipped</span> </div>
+                <div id="outForDelivery" class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text">Out For Delivery</span> </div>
+                <div id="delivered" class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Delivered</span> </div>
+            </div>
+            <hr>
+            <ul class="row">
+                {% for item in order.orderItems %}
+                <li class="col-md-4">
+                    <figure class="itemside mb-3">
+                        <!-- <div class="aside"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1571751108/Ecommerce/laptop-dell-xps-15-computer-monitors-laptops.jpg" class="img-sm border"></div> -->
+                        <figcaption class="info align-self-center">
+                            <p class="title">{{ item.name }} </p> <span class="text-muted">$ {{ item.itemTotal }}</span> <span class="text-muted">quantity: {{ item.quantity }}</span>
+                        </figcaption>
+                    </figure>
+                </li>
+                {% endfor %}
+            </ul>
+            <hr>
+            <div><h4> #TODO: Enter order invoice info here</h4></div>
+            <hr>
+            <a href="{% url 'accounts:orderList' %}" class="btn btn-warning" data-abc="true"> <i class="fa fa-chevron-left"></i> Back to orders</a>
+        </div>
+    </article>
 </div>
+{% endblock %}
 
+{% block script %}
+<script src="{% static 'accounts/orderPage.js' %}"></script>
 {% endblock %}

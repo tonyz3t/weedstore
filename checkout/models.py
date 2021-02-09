@@ -68,8 +68,22 @@ class OrderJSON(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     data = models.TextField(null=True)
     orderID = models.IntegerField(null=True)
+    
+    CONFIRMED = 'CD'
+    SHIPPED = 'SD'
+    OUTFORDELIVERY= 'OD'
+    DELIVERED = 'DL'
+    TRACK_CHOICES = [
+        (CONFIRMED, 'Confirmed'),
+        (SHIPPED, 'Shipped'),
+        (OUTFORDELIVERY, 'OutForDelivery'),
+        (DELIVERED, 'Delivered'),
+    ]
+    track = models.CharField(max_length=2, choices=TRACK_CHOICES, default=CONFIRMED)
+
+
     def __str__(self):
-        return self.user.user.username
+        return self.user.user.username + " " + str(self.orderID)
     
 
 

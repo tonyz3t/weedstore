@@ -11,6 +11,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 # Create your views here.
 # go to the cart and list all items within the cart
+@login_required(login_url=reverse_lazy('accounts:login'))
 def index(request):
     # Get current users profile
     user_profile = Profile.objects.get(user=request.user)
@@ -22,15 +23,17 @@ def index(request):
         # parse through the cart        
         for item in cart:
             # get each product form with the product id
-            newQuantity = request.POST[f"product{item.items.id}"]
+            newQuantity = request.POST[f"product{item.variant.pk}"]
+            print(item)
+            print("Post Request: ", request.POST)
             # Only change the item quantity if the newquantity value is different
             if item.quantity != newQuantity:
                 if int(newQuantity) <= 0:
-                    deleteItem(request, item.items.id)
+                    deleteItem(request, item.items.id, item.variant.pk)
                 else:
-                    if int(newQuantity) > item.items.stockAmount:
-                        print("Big: ", int(newQuantity), ":", item.items.stockAmount)
-                        item.quantity = item.items.stockAmount
+                    if int(newQuantity) > item.variant.stockAmount:
+                        print("Big: ", int(newQuantity), ":", item.variant.stockAmount)
+                        item.quantity = item.variant.stockAmount
                     else:    
                         item.quantity = int(newQuantity)
                     updateCartItemTotal(item)
@@ -82,17 +85,18 @@ def itemAdded(request, id, **kwargs):
         quantity = request.GET["quantity"]#Get the quantity from the GET request
     except MultiValueDictKeyError as e:
         quantity = "1"
-        
-    variantPK = request.GET["options"]
+    print(request)
+    variantPK = request.GET['options']
     print("printing variant " + variantPK)
     variant = Variant.objects.get(pk=variantPK) 
+    print(variant)
 
     isAlreadyInCart = CartItem.objects.filter(user=profile, items=item, variant=variant) #This is a queryset that will have one object if the item is already gotten by the user
     if len(isAlreadyInCart) > 0:#If the user already bought the item
         cItemFromTable = isAlreadyInCart.first() #Make an instance of that CartItem that has the same product
-        if cItemFromTable.quantity + int(quantity) > item.stockAmount:#If the sum quantity is larget than stock, then make it so make amount can be added to cItem
-            print("too high:", item.stockAmount)
-            cItemFromTable.quantity = item.stockAmount
+        if cItemFromTable.quantity + int(quantity) > variant.stockAmount:#If the sum quantity is larget than stock, then make it so make amount can be added to cItem
+            print("too high:", variant.stockAmount)
+            cItemFromTable.quantity = variant.stockAmount
         else:
             cItemFromTable.quantity += int(quantity) #Increase it's quantity by the new amount
 
@@ -100,8 +104,8 @@ def itemAdded(request, id, **kwargs):
         cItemFromTable.save()#Save it back to the db
 
     else:#If the CartItem with the same product does not exist, make a new one
-        if(int(quantity) > item.stockAmount):#If quantity is larger than stock than make it equal to the max you can order
-            quantity = item.stockAmount
+        if(int(quantity) > variant.stockAmount):#If quantity is larger than stock than make it equal to the max you can order
+            quantity = variant.stockAmount
         cartItem = CartItem(
             user=profile,
             items=item, 

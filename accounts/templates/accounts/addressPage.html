@@ -4,49 +4,49 @@
 
 {% block body %}
 
-<div class="container">
-    <h1>Address Page</h1>
-    {% for object in addressess %}
-    <div class="border border-dark rounded">
-        <ul>
-            {% if object.default %}
-            <li>
-                <h5>(DEFAULT)</h5>
-            </li>
-            {% endif %}
-            <li>
-                <h5>{{ object.address.first_name }}</h5>
-            </li>
-            <li>
-                <h5>{{ object.address.last_name}}</h5>
-            </li>
-            <li>
-                <h5>{{ object.address.email }}</h5>
-            </li>
-            <li>
-                <h5>{{ object.address.address }}</h5>
-            </li>
-            <li>
-                <h5>{{ object.address.zip_code }}</h5>
-            </li>
-            {% if object.default == False %}
-            <li>
-                <a href="{% url 'accounts:setDefault' id=object.address.pk %}" class="btn btn-alert border-dark rounded">Set Default</a>
-            </li>
-            {% endif %}
-        </ul>
-    </div>
-    {% endfor %}
-
-    <div>
-
-        <a href="{% url 'accounts:newAddress' %}" class="btn border border-dark rounded">Add New Address</a>
+<div class="container mt-5">  
+    <div class="row">
+        <div class="col-md-3.1">
+            <a href="{% url 'accounts:newAddress' %}">
+            <div class="card p-3 addressCard border border-dark rounded shadow">
+                <span class="text-dark"><i class="fa fa-plus"></i></span>
+                <h5>add new address</h5>
+            </div>
+            </a>
+        </div>
+        {% for object in addressess %}
+        <div class="col-md-3.1">
+            <div class="card p-3 addressCard border border-dark rounded shadow">
+                <!-- <div class="d-flex flex-row mb-3">
+                    <div class="d-flex flex-column ml-2"><span>Stripe</span><span class="text-black-50">Payment Services</span><span class="ratings"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></div>
+                </div> -->
+                {% if object.default %}
+                <h6><strong>DEFAULT</strong></h6>
+                <hr style="color: black;">
+                {% endif %}
+                <h5><strong>{{ object.address.first_name }} {{ object.address.last_name }}</strong></h5>
+                <h6>{{ object.address.address }}</h6>
+                <h6>{{ object.address.zip_code }}</h6>
+                <h6>{{ object.address.email }}</h6>
+                <div class="d-flex justify-content-between install mt-3">
+                    <a href="#"><span class="text-primary">Edit&nbsp;<i class="fa fa-angle-right"></i></span></a>
+                    <a href="{% url 'accounts:deleteAddress' id=object.address.pk %}"><span class="text-primary">Remove&nbsp;<i class="fa fa-angle-right"></i></span></a>
+                    {% if object.default == False %}
+                    <a href="{% url 'accounts:setDefault' id=object.address.pk %}"><span class="text-primary">Set Default&nbsp;<i class="fa fa-angle-right"></i></span></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 
-
 {% endblock %}
 
-{% block script %}
+{% block static %} 
+<link rel="stylesheet" href="{% static 'accounts/styles.css' %}"> 
+{% endblock %}
 
+
+{% block script %}
 {% endblock %}

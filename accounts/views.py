@@ -85,7 +85,8 @@ def orderPage(request, id):
     user_profile = Profile.objects.get(user=request.user)
     order = OrderJSON.objects.get(orderID=id)
     context = {
-        'order': eval(order.data)
+        'order': eval(order.data),
+        "trackStep": order.track,
     }
     return render(request, "accounts/orderPage.html", context)
 
@@ -135,6 +136,14 @@ def setDefault(request, id):
     user_profile.save()
 
     return redirect('accounts:addressPage')
+
+# delete address
+def delAddress(request, id):
+    user_profile = Profile.objects.get(user=request.user)
+    Address.objects.filter(user=user_profile, pk=id).delete()
+
+    return redirect('accounts:addressPage')
+
 
 # TODO: set default button
 # TODO: add functions to allow user to change account settings

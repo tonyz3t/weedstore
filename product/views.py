@@ -42,13 +42,13 @@ def productIndex(request):
 
 # Function returns the view for a single item
 # retrieves a page based on the items id
-def productPage(request, **kwargs):
+def productPage(request, id, variant = -1):
     # return the user to the page with single item
    
     imgsList = []#We need a list because we need to keep the order of the images. Thumbnails come first.
 
-    imgs = Product.objects.get(id=kwargs['id']).image_set.all()#Retrieve all the images related to this product
-    variants = Product.objects.get(id=kwargs['id']).variant_set.all()
+    imgs = Product.objects.get(id=id).image_set.all()#Retrieve all the images related to this product
+    variants = Product.objects.get(id=id).variant_set.all()
     print(variants)
 
     for i in imgs:#Loop throuhg the images and if it is a thumbnail insert it at the beginning of the list otherwise at the end
@@ -59,9 +59,10 @@ def productPage(request, **kwargs):
 
     
     return render(request, "product/productPage.html", {
-        "product": Product.objects.get(id=kwargs['id']),
+        "product": Product.objects.get(id=id),
         "images": imgsList,
         "variants": variants,
+        "currentVariant": variants.first() if variant == -1 else variants.get(pk=variant)
         
     })
     

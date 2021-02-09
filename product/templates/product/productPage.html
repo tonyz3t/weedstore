@@ -47,40 +47,45 @@
             <div class="col-xl-7 col-lg-7 col-md-6 text-center">
                 <div class="single-product-details">
                     <form method="GET" action="{% url 'cart:itemAdded' id=product.id  %}">
-                    <h2>{{ product.name|capfirst }}</h2>
-                    
-                    <select name="options" class="form-control dropDown text-center mb-3" style="width:30%; border-radius: 5px;">
-                        {% for object in variants %}
-                        <option value="{{object.pk}}" class="mb-3">size: {{ object.size }} price: ${{ object.price }}</option>
-                        {% endfor %}
-                    </select>
+                        <h2>{{ product.name|capfirst }}</h2>
+                        
+                        <select onchange="changeVariant({{product.id}},this.options[this.selectedIndex].value);" name="options" class="form-control dropDown text-center mb-3" style="width:30%; border-radius: 5px; display:inline-block;">
+                            {% for object in variants %}
+                                {%if object.pk == currentVariant.pk%}
+                                    <option selected value="{{object.pk}}" class="mb-3">size: {{ object.size }} price: ${{ object.price }}</option>
+                                {%else%}
+                                    <option value="{{object.pk}}" class="mb-3">size: {{ object.size }} price: ${{ object.price }}</option>
+                                {%endif%}
+                                
+                            {% endfor %}
+                        </select>
 
-                    <h5> <del>$ {{ product.price }}</del> ${{ product.price }}</h5>
-                    <p class="available-stock"> Stock: {{product.stockAmount}}
-                    <p>
-                    <h4>Short Description:</h4>
-                    <p>{{ product.description }}. </p>
-                    
-
-
-                        <div class="mb-3">
-                            <label style="display:block;">Quantity</label>
-                            <input class="text-center" style="width:30%; border-radius: 5px;" value="1" min="0"
-                                max="{{product.stockAmount}}" type="number" name="quantity">
-                        </div>
+                        <h5> <del>$ {{ product.price }}</del> ${{ currentVariant.price }}</h5>
+                        <p class="available-stock"> Stock: {{currentVariant.stockAmount}}
+                        
+                        <h4>Short Description:</h4>
+                        <p>{{ product.description }}. </p>
+                        
 
 
-
-                        <div class="price-box-bar">
-                            <div class="cart-and-bay-btn">
-                                {% if product.stockAmount == 0 %}
-                                <input type="submit" class="btn hvr-hover" value="Add to Cart" style="color: #FFFFFF;"
-                                    disabled>
-                                {% else %}
-                                <input type="submit" class="btn hvr-hover" value="Add to Cart" style="color: #FFFFFF;">
-                                {% endif %}
+                            <div class="mb-3">
+                                <label style="display:block;">Quantity</label>
+                                <input class="text-center" style="width:30%; border-radius: 5px;" value="1" min="0"
+                                    max="{{currentVariant.stockAmount}}" type="number" name="quantity">
                             </div>
-                        </div>
+
+
+
+                            <div class="price-box-bar">
+                                <div class="cart-and-bay-btn">
+                                    {% if product.stockAmount == 0 %}
+                                    <input type="submit" class="btn hvr-hover" value="Add to Cart" style="color: #FFFFFF;"
+                                        disabled>
+                                    {% else %}
+                                    <input type="submit" class="btn hvr-hover" value="Add to Cart" style="color: #FFFFFF;">
+                                    {% endif %}
+                                </div>
+                            </div>
 
                     </form>
 
@@ -169,5 +174,10 @@
 
     })
     document.body.onload = (() => initialize())
+
+    function changeVariant(id,variant){
+        console.log(`${id} ${variant}`)
+        window.location.href = `/product/${id}/${variant}`;
+    }
 </script>
 {%endblock script%}

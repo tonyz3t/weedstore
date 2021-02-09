@@ -14,4 +14,5 @@ urlpatterns = [
     path('addresses/', views.addressPage, name="addressPage"),
     path('addresses/new/', views.newAddress, name="newAddress"),
     path('addresses/default/<int:id>/', views.setDefault, name="setDefault"),
+    path('addresses/delete/<int:id>/', views.delAddress, name="deleteAddress"),
 ]
