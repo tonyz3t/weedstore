@@ -14,7 +14,7 @@ class Product(models.Model):
         return self.name
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=15, decimal_places=2)
-    description = models.CharField(max_length=150)
+    description = models.TextField()
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     stockAmount = models.PositiveSmallIntegerField(default=0, blank=True, null=True)
     is_featured = models.BooleanField(default=False)
